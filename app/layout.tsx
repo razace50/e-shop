@@ -1,11 +1,11 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Poppins } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+const Poppins = Poppins({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'E-shop',
+  title: 'E-Shop',
   description: 'Ecommerce app',
 }
 

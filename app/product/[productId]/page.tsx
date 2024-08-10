@@ -1,10 +1,18 @@
+import Container from "@/app/components/Container";
+import { product } from "@/utils/product";
+import ProductDetails from "./ProductDetails";
+
 interface IPrams{
-productId?: string
+productId?: string;
 }
 
 const Product = ({params} : {params: IPrams}) => {
     console.log("params", params);
-    return ( <div>Product Page</div> );
+    return ( <div>
+       <Container>
+        <ProductDetails/>
+       </Container>
+    </div> );
 }
- 
+
 export default Product;

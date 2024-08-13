@@ -1,4 +1,5 @@
 "use client";
+import Button from "@/app/components/Button";
 import SetColor from "@/app/components/products/SetColor";
 import SetQuantity from "@/app/components/products/SetQuantity";
 import product from "@/utils/product";
@@ -110,7 +111,11 @@ const handleQtyDecrease = useCallback(() =>{
             handleQtyDecrease={handleQtyDecrease}
             />
             <Horizontal/>
-            <div>add to cart</div>
+            <div>
+                <Button
+                label="Add To Cart" onclick={() =>{}}
+                />
+            </div>
             </div>
     </div> );
 };

@@ -3,7 +3,7 @@ import { createContext, useCallback, useContext, useState } from "react";
 
 type CartContextType = {
   cartTotalQty: number;
-  cartProducts: CartProductType[];
+  cartProducts: CartProductType[] | null;
   handleAddProductToCart: (product: CartProductType) => void;
 };
 

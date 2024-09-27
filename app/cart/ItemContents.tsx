@@ -5,11 +5,13 @@ import Link from "next/link";
 import { truncateText } from "@/utils/truncateText";
 import Image from "next/image";
 import SetQuantity from "../components/products/SetQuantity";
+import { useCart } from "@/hooks/useCart";
 
 interface ItemContentsProps {
   item: CartProductType;
 }
 const ItemContents: React.FC<ItemContentsProps> = ({ item }) => {
+  const { handleRemoveProductFromCart } = useCart();
   return (
     <div
       className="
@@ -55,7 +57,7 @@ const ItemContents: React.FC<ItemContentsProps> = ({ item }) => {
             <button
               className=" text-slate-500
         underline"
-              onClick={() => {}}
+              onClick={() => handleRemoveProductFromCart(item)}
             >
               Remove
             </button>

@@ -34,11 +34,14 @@ export const CartContextProvider = (props: Props) => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const cartItems: string | null = localStorage.getItem("eShopCartItems");
+
+      // Parse cartItems and ensure it's an array
       const cProducts: CartProductType[] = cartItems
         ? JSON.parse(cartItems)
         : [];
 
-      if (cProducts.length > 0) {
+      // Ensure cProducts is an array
+      if (Array.isArray(cProducts) && cProducts.length > 0) {
         setCartProducts(cProducts);
 
         // Update the total quantity based on the products in the cart

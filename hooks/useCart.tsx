@@ -14,6 +14,8 @@ type CartContextType = {
   cartProducts: CartProductType[] | null;
   handleAddProductToCart: (product: CartProductType) => void;
   handleRemoveProductFromCart: (product: CartProductType) => void;
+  handleCartQtyIncrease: (product: CartProductType) => void;
+  handleCartQtyDecrease: (product: CartProductType) => void;
 };
 
 // Create the Cart context with initial value null
@@ -103,6 +105,48 @@ export const CartContextProvider = (props: Props) => {
     },
     [cartProducts]
   );
+  const handleCartQtyIncrease = useCallback(
+    (product: CartProductType) => {
+      let updatedCart;
+      if (product.quantity === 99) {
+        return toast.error("Oppps! Maximum reached");
+      }
+      if (cartProducts) {
+        updatedCart = [...cartProducts];
+        const existingIndex = cartProducts.findIndex(
+          (item) => item.id === product.id
+        );
+        if (existingIndex > -1) {
+          updatedCart[existingIndex].quantity = ++updatedCart[existingIndex]
+            .quantity;
+        }
+        setCartProducts(updatedCart);
+        localStorage.setItem("eShopCartItems", JSON.stringify(updatedCart));
+      }
+    },
+    [cartProducts]
+  );
+  const handleCartQtyDecrease = useCallback(
+    (product: CartProductType) => {
+      let updatedCart;
+      if (product.quantity === 1) {
+        return toast.error("Oppps! It's minimum");
+      }
+      if (cartProducts) {
+        updatedCart = [...cartProducts];
+        const existingIndex = cartProducts.findIndex(
+          (item) => item.id === product.id
+        );
+        if (existingIndex > -1) {
+          updatedCart[existingIndex].quantity = --updatedCart[existingIndex]
+            .quantity;
+        }
+        setCartProducts(updatedCart);
+        localStorage.setItem("eShopCartItems", JSON.stringify(updatedCart));
+      }
+    },
+    [cartProducts]
+  );
 
   // Provide cart-related values and functions to the context
   const value = {
@@ -110,6 +154,8 @@ export const CartContextProvider = (props: Props) => {
     cartProducts,
     handleAddProductToCart,
     handleRemoveProductFromCart,
+    handleCartQtyIncrease,
+    handleCartQtyDecrease,
   };
 
   return <CartContext.Provider value={value} {...props} />;

@@ -10,57 +10,60 @@ import { useCart } from "@/hooks/useCart";
 interface ItemContentsProps {
   item: CartProductType;
 }
+
 const ItemContents: React.FC<ItemContentsProps> = ({ item }) => {
   const {
     handleRemoveProductFromCart,
     handleCartQtyIncrease,
     handleCartQtyDecrease,
   } = useCart();
+
   return (
     <div
       className="
-  grid
-  grid-cols-5
-  text-xs
-  md:text-sm
-  gap-4
-  border-slate-200
-  py-4
-  items-center
-  "
+        grid
+        grid-cols-5
+        text-xs
+        md:text-sm
+        gap-4
+        border-slate-200
+        py-4
+        items-center
+      "
     >
       <div
         className="
-      col-span-2
-      justify-self-start
-      flex
-      gap-2
-      md:gap-4
-      "
+          col-span-2
+          justify-self-start
+          flex
+          gap-2
+          md:gap-4
+        "
       >
         <Link href={`/product/${item.id}`}>
-          <div
-            className="relative w-[70px]
-          aspect-square"
-          >
-            <Image
-              src={item.selectedImg.image}
-              alt={item.name}
-              fill
-              className="object-contain"
-            />
+          <div className="relative w-[70px] aspect-square">
+            {/* Add a check for selectedImg and image */}
+            {item?.selectedImg?.image ? (
+              <Image
+                src={item.selectedImg.image}
+                alt={item.name}
+                fill
+                className="object-contain"
+              />
+            ) : (
+              <div className="w-[70px] h-[70px] bg-gray-200 flex items-center justify-center">
+                {/* Placeholder for missing image */}
+                No Image
+              </div>
+            )}
           </div>
         </Link>
-        <div
-          className="flex flex-col
-        justify-between"
-        >
+        <div className="flex flex-col justify-between">
           <Link href={`/product/${item.id}`}>{truncateText(item.name)}</Link>
-          <div>{item.selectedImg.color}</div>
+          <div>{item?.selectedImg?.color || "Unknown Color"}</div>
           <div className="w-[70px]">
             <button
-              className=" text-slate-500
-        underline"
+              className="text-slate-500 underline"
               onClick={() => handleRemoveProductFromCart(item)}
             >
               Remove

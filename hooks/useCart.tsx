@@ -16,6 +16,7 @@ type CartContextType = {
   handleRemoveProductFromCart: (product: CartProductType) => void;
   handleCartQtyIncrease: (product: CartProductType) => void;
   handleCartQtyDecrease: (product: CartProductType) => void;
+  handleClearCart: () => void;
 };
 
 // Create the Cart context with initial value null
@@ -33,18 +34,26 @@ export const CartContextProvider = (props: Props) => {
   // Load cart from localStorage when the component mounts
   useEffect(() => {
     if (typeof window !== "undefined") {
+      // Fetch cart items from localStorage
       const cartItems: string | null = localStorage.getItem("eShopCartItems");
 
-      // Parse cartItems and ensure it's an array
-      const cProducts: CartProductType[] = cartItems
-        ? JSON.parse(cartItems)
-        : [];
+      let cProducts: CartProductType[] = [];
 
-      // Ensure cProducts is an array
+      // Safely parse cartItems if it exists
+      if (cartItems) {
+        try {
+          cProducts = JSON.parse(cartItems) || [];
+        } catch (error) {
+          console.error("Error parsing cartItems from localStorage:", error);
+          cProducts = []; // Set to empty array in case of error
+        }
+      }
+
+      // Ensure cProducts is an array and has items
       if (Array.isArray(cProducts) && cProducts.length > 0) {
         setCartProducts(cProducts);
 
-        // Update the total quantity based on the products in the cart
+        // Calculate the total quantity of products in the cart
         const totalQty = cProducts.reduce(
           (acc, product) => acc + (product.quantity || 0),
           0
@@ -88,6 +97,7 @@ export const CartContextProvider = (props: Props) => {
       return updatedCart;
     });
   }, []);
+
   const handleRemoveProductFromCart = useCallback(
     (product: CartProductType) => {
       if (cartProducts) {
@@ -108,6 +118,7 @@ export const CartContextProvider = (props: Props) => {
     },
     [cartProducts]
   );
+
   const handleCartQtyIncrease = useCallback(
     (product: CartProductType) => {
       let updatedCart;
@@ -129,6 +140,7 @@ export const CartContextProvider = (props: Props) => {
     },
     [cartProducts]
   );
+
   const handleCartQtyDecrease = useCallback(
     (product: CartProductType) => {
       let updatedCart;
@@ -151,6 +163,13 @@ export const CartContextProvider = (props: Props) => {
     [cartProducts]
   );
 
+  // Fix applied here to clear the cart
+  const handleClearCart = useCallback(() => {
+    setCartProducts([]); // Set cartProducts to an empty array
+    setCartTotalQty(0); // Reset the total quantity to 0
+    localStorage.setItem("eShopCartItems", JSON.stringify([])); // Clear localStorage
+  }, []);
+
   // Provide cart-related values and functions to the context
   const value = {
     cartTotalQty,
@@ -159,6 +178,7 @@ export const CartContextProvider = (props: Props) => {
     handleRemoveProductFromCart,
     handleCartQtyIncrease,
     handleCartQtyDecrease,
+    handleClearCart,
   };
 
   return <CartContext.Provider value={value} {...props} />;

@@ -5,6 +5,7 @@ import { MdArrowBack } from "react-icons/md";
 import Heading from "../components/Heading";
 import Button from "../components/Button";
 import ItemContents from "./ItemContents";
+import toast from "react-hot-toast";
 
 const CartClient = () => {
   const { cartProducts, handleClearCart } = useCart();
@@ -64,6 +65,7 @@ const CartClient = () => {
             label="Clear Cart"
             onclick={() => {
               handleClearCart();
+              toast.success("Product removed");
             }}
             small
             outline

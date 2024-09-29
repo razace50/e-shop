@@ -28,8 +28,12 @@ interface Props {
 }
 
 export const CartContextProvider = (props: Props) => {
+  const [cartTotalAmount, setCartTotalAmount] = useState(0);
   const [cartTotalQty, setCartTotalQty] = useState(0);
   const [cartProducts, setCartProducts] = useState<CartProductType[]>([]);
+  console.log("qty", cartTotalQty);
+
+  console.log("amount", cartTotalAmount);
 
   // Load cart from localStorage when the component mounts
   useEffect(() => {
@@ -62,6 +66,29 @@ export const CartContextProvider = (props: Props) => {
       }
     }
   }, []);
+
+  useEffect(() => {
+    const getTotals = () => {
+      if (cartProducts) {
+        const { total, qty } = cartProducts?.reduce(
+          (acc, item) => {
+            const itemTotal = item.price * item.quantity;
+
+            acc.total += itemTotal;
+            acc.qty += item.quantity;
+            return acc;
+          },
+          {
+            total: 0,
+            qty: 0,
+          }
+        );
+        setCartTotalQty(qty);
+        setCartTotalAmount(total);
+      }
+    };
+    getTotals();
+  }, [cartProducts]);
 
   // Handle adding a product to the cart
   const handleAddProductToCart = useCallback((product: CartProductType) => {

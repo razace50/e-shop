@@ -6,9 +6,10 @@ import Heading from "../components/Heading";
 import Button from "../components/Button";
 import ItemContents from "./ItemContents";
 import toast from "react-hot-toast";
+import { formatPrice } from "@/utils/formatPrice";
 
 const CartClient = () => {
-  const { cartProducts, handleClearCart } = useCart();
+  const { cartProducts, handleClearCart, cartTotalAmount } = useCart();
 
   if (!cartProducts || cartProducts.length === 0) {
     return (
@@ -77,7 +78,7 @@ const CartClient = () => {
           text-base font-semibold"
           >
             <span>Subtotal</span>
-            <span>NPR1,000</span>
+            <span>{formatPrice(cartTotalAmount)}</span>
           </div>
           <p className="text-slate-500">
             Taxes and shipping costs will be added at checkout

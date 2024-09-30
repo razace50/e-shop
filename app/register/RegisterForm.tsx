@@ -5,6 +5,7 @@ import Heading from "../components/Heading";
 import Input from "../components/inputs/Input";
 import { register } from "module";
 import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
+import Button from "../components/Button";
 
 const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,7 +13,13 @@ const RegisterForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FieldValues>({});
+  } = useForm<FieldValues>({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+  });
   return (
     <>
       <Heading title="Sign up for E-shop" />
@@ -24,6 +31,27 @@ const RegisterForm = () => {
         register={register}
         errors={errors}
         required
+      />
+      <Input
+        id="email"
+        label="Email"
+        disabled={isLoading}
+        register={register}
+        errors={errors}
+        required
+      />
+      <Input
+        id="password"
+        label="Password"
+        disabled={isLoading}
+        register={register}
+        errors={errors}
+        required
+        type="password"
+      />
+      <Button
+        label={isLoading ? "Loading" : "Sign Up"}
+        onclick={handleSubmit(onSubmit)}
       />
     </>
   );
